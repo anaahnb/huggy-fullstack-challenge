@@ -1,0 +1,30 @@
+$white: #FFFFFF;
+$mine-shaft-10: #F8F8F8;
+$mine-shaft-30: #E1E1E1;
+$mine-shaft-100: #757575;
+$mine-shaft-700: #262626;
+$persian-blue-600: #321BDE;
+$persian-blue-300: #5946E4;
+$alizarin-crimson-500: #AD2213;
+
+:root {
+    margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;  
+    
+    color: $mine-shaft-700;
+    background-color: $mine-shaft-10;
+    font-family: "Roboto", sans-serif;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    height: 100vh;
+}
