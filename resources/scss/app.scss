@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 $white: #FFFFFF;
 $mine-shaft-10: #F8F8F8;
 $mine-shaft-30: #E1E1E1;
@@ -25,7 +27,8 @@ $alizarin-crimson-500: #AD2213;
 	
 	h2 {
 		font-size: 1.25rem;
-		font-weight: 600;
+		font-weight: 500;
+		margin: 0;
 	}
 	
 }
