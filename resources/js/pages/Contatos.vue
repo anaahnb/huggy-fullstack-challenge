@@ -4,7 +4,7 @@
 
         <div class="contact__list">
             <div class="contact__action">
-                <input-component withIcon />
+                <input-component placeholder="Buscar contato" withIcon />
                 <button-component type="primary" withIcon icon="add" text="Adicionar contato" />
             </div>
             <table>
@@ -21,10 +21,15 @@
 
 <script>
 
-    import South from '../../../public/icons/South.vue'
+    import South from '/public/icons/South.vue'
+    import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
+    import InputComponent from '/resources/js/components/InputComponent.vue'
+
     export default {
         components: {
             South,
+            ButtonComponent,
+            InputComponent
         }
     }
 
@@ -73,6 +78,7 @@
                     font-size: .75rem;
                     color: #505050;
                     text-align: left;
+                    font-weight: 600;
 
                     &:first-child { 
                         width: 40%;

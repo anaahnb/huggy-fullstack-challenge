@@ -9,7 +9,4 @@ import InputComponent from './components/InputComponent.vue'
 
 const app = createApp(App);
 
-app.component('ButtonComponent', ButtonComponent);
-app.component('InputComponent', InputComponent);
-
 app.use(router).mount("#app");
