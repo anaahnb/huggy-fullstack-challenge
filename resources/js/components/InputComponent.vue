@@ -14,14 +14,25 @@
 </template>
 
 <script>
-    import Search from '../../../public/icons/Search.vue';
+    import Search from '/public/icons/Search.vue';
 
     export default {
         name: "InputComponent",
+        components: {
+            Search,
+        },
         props: {
             type: {
                 type: String,
                 default: "default"
+            },
+            value: {
+                type: String,
+                default: '',
+            },
+            name: {
+                type: String,
+                default: '',
             },
             withIcon: {
                 type: Boolean,
@@ -42,20 +53,16 @@
         },
         data() {
             return {
-                inputValue: ""
+                inputValue: "",
             };
         },
         computed: {
             inputClasses() {
                 return {
                     danger: this.type === "danger",
-                    'with-icon': this.withIcon
                 };
             }
         },
-        components: {
-            Search,
-        }
     };
 </script>
 
@@ -67,6 +74,8 @@
     label {
         display: block;
         margin-bottom: 0.5rem;
+        font-weight: 500;
+        font-size: .75rem;
     }
 
     .input-container {
@@ -80,10 +89,12 @@
         padding: 0.5625rem 0.75rem;
         font-size: 0.875rem;
         transition: border-color 0.3s ease;
-        width: 100%;
+        width: 90%;
 
         &::placeholder {
             color: #949494;
+            font-weight: 400;
+
         }
 
         &:focus {

@@ -1,6 +1,6 @@
 <template>
     <transition name="modal">
-      <div class="modal-mask" @click="$emit('close')">
+      <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
             <div class="modal-header">
@@ -17,8 +17,6 @@
   
             <div class="modal-footer">
               <slot name="footer">
-                <button-component text="Cancelar" type="secondary" @click="$emit('close')"></button-component>
-                <button-component text="Salvar" type="primary"></button-component>
               </slot>
             </div>
           </div>
@@ -29,18 +27,23 @@
 
 <script>
 
-  import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
-
   export default {
-    name: "ModalComponent",
-    components: {
-      ButtonComponent
-    }
-
+    name: "ModalComponent"
   }
 </script>
 
 <style lang="scss" scoped>
+
+  @keyframes scale-in {
+      0% {
+        -webkit-transform: scale(0);
+                transform: scale(0);
+      }
+      100% {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+    }
+  }
 
   .modal-mask {
     position: fixed;
@@ -58,9 +61,12 @@
     display: table-cell;
     vertical-align: middle;
 
+    -webkit-animation: scale-in 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+	        animation: scale-in 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
+
     .modal-container {
       max-width: 38.125rem;
-      height: 60vh;
+      height: 80vh;
       margin: 0 auto;
 
       border: 1px solid #E1E1E1;
@@ -76,13 +82,6 @@
         h2 {
           margin: 0;
         }
-      }
-
-      .modal-footer {
-        display: flex;
-        gap: .5rem;
-      
-        justify-content: flex-end;
       }
 
       .modal-header, .modal-body, .modal-footer {

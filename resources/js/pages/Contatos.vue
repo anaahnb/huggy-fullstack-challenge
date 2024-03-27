@@ -2,9 +2,7 @@
     <section>
         <h2>Contatos</h2>
 
-        <modal-component v-if="showModal" @close="showModal = false">
-            <h3 slot="header">custom header</h3>
-        </modal-component>
+        <create-modal v-if="showModal" @close="closeModal" />
 
         <div class="contact__list">
             <div class="contact__action">
@@ -28,14 +26,14 @@
     import South from '/public/icons/South.vue'
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
     import InputComponent from '/resources/js/components/InputComponent.vue'
-    import ModalComponent from '/resources/js/components/ModalComponent.vue'
+    import CreateModal from '/resources/js/components/CreateModal.vue'
 
     export default {
         components: {
             South,
             ButtonComponent,
             InputComponent,
-            ModalComponent
+            CreateModal
         },
         data() {
             return {
@@ -59,6 +57,10 @@
     section {
         max-width: 58.125rem;
         margin: 0 auto;
+
+        h2 {
+            margin: 1rem 0;
+        }
         
         .contact__list {
             background-color: white;
@@ -71,6 +73,7 @@
                 display: flex;
                 justify-content: space-between;
                 padding: 1rem;
+                flex-wrap: wrap;
 
                 input {
                     padding: 8px 12px;
