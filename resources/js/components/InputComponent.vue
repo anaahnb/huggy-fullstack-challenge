@@ -17,6 +17,7 @@
     import Search from '../../../public/icons/Search.vue';
 
     export default {
+        name: "InputComponent",
         props: {
             type: {
                 type: String,

@@ -18,4 +18,14 @@ $alizarin-crimson-500: #AD2213;
     color: $mine-shaft-700;
     background-color: $mine-shaft-10;
     font-family: "Roboto", sans-serif;
+
+	p {
+		margin: 0;
+	}
+	
+	h2 {
+		font-size: 1.25rem;
+		font-weight: 600;
+	}
+	
 }

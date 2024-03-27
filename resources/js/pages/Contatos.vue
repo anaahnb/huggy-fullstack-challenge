@@ -2,10 +2,14 @@
     <section>
         <h2>Contatos</h2>
 
+        <modal-component v-if="showModal" @close="showModal = false">
+            <h3 slot="header">custom header</h3>
+        </modal-component>
+
         <div class="contact__list">
             <div class="contact__action">
                 <input-component placeholder="Buscar contato" withIcon />
-                <button-component type="primary" withIcon icon="add" text="Adicionar contato" />
+                <button-component type="primary" withIcon icon="add" text="Adicionar contato" :handleClick="openModal"/>
             </div>
             <table>
                 <th>
@@ -24,12 +28,27 @@
     import South from '/public/icons/South.vue'
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
     import InputComponent from '/resources/js/components/InputComponent.vue'
+    import ModalComponent from '/resources/js/components/ModalComponent.vue'
 
     export default {
         components: {
             South,
             ButtonComponent,
-            InputComponent
+            InputComponent,
+            ModalComponent
+        },
+        data() {
+            return {
+                showModal: false
+            };
+        },
+        methods: {
+            openModal() {
+                this.showModal = true;
+            },
+            closeModal() {
+                this.showModal = false;
+            }
         }
     }
 
@@ -40,12 +59,6 @@
     section {
         max-width: 58.125rem;
         margin: 0 auto;
-        
-
-        h2 {
-            font-size: 1.25rem;
-            font-weight: 500;
-        }
         
         .contact__list {
             background-color: white;
