@@ -62,6 +62,9 @@
         .button_group {
             display: flex;
             gap: 1.5rem;
+            margin-top: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
         }
     }
 </style>

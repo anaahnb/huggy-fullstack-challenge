@@ -8,9 +8,13 @@
             <div>   
                 <input-component label="Nome" placeholder="Nome completo"></input-component>
                 <input-component label="Email" placeholder="Email"></input-component>
-                <input-component label="Telefone" placeholder="Telefone"></input-component>
-                <input-component label="Celular" placeholder="Endereço"></input-component>
                 <div class="input__row">
+                    <input-component label="Telefone" placeholder="Telefone"></input-component>
+                    <input-component label="Celular" placeholder="Endereço"></input-component>
+                </div>
+                <input-component label="Endereço" placeholder="Endereço"></input-component>
+                <div class="input__row">
+                    <input-component label="Cidade" placeholder="Cidade"></input-component>
                     <input-component label="Bairro" placeholder="Bairro"></input-component>
                     <input-component label="Estado" placeholder="Estado"></input-component>
                 </div>
@@ -50,7 +54,8 @@
 
     .input__row {
         display: flex;
-        gap: 1.5rem;
+        gap: 0 1.5rem;
+        flex-wrap: wrap
     }
 
 </style>

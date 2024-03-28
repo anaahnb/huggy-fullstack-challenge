@@ -10,12 +10,11 @@
                 <input-component placeholder="Nome" label="Nome" />
                 <input-component placeholder="Email" label="Email" />
                 <input-component type="password" placeholder="Senha" label="Senha" />
-                <input-component type="password" placeholder="Confirmar singa" label="Confirmação de senha" />
+                <input-component type="password" placeholder="Confirmar senha" label="Confirmação de senha" />
 
-                
                 <div class="button_group">
                     <button-component text="Registrar" />
-                    <button-component type="secondary" text="Já possui conta? Entre aqui" />
+                    <button-component type="secondary" text="Possui conta? Entre" />
                 </div>
             </form>
         </div>
@@ -65,6 +64,9 @@
         .button_group {
             display: flex;
             gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+
         }
     }
 </style>

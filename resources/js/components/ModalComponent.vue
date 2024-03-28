@@ -60,13 +60,13 @@
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
+    padding: 1rem;
 
     -webkit-animation: scale-in 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
 	        animation: scale-in 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940);
 
     .modal-container {
       max-width: 38.125rem;
-      height: 80vh;
       margin: 0 auto;
 
       border: 1px solid #E1E1E1;
