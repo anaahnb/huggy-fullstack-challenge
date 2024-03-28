@@ -3,9 +3,9 @@
         <div class="input-wrapper">
             <label v-if="!withIcon">{{ label }}</label>
             <div class="input-container">
-                <input :class="inputClasses" :placeholder="placeholder" v-model="inputValue" />
+                <input :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" />
                 <span v-if="withIcon" class="icon">
-                    <search size=14 color="#757575"></search>
+                    <search size="14" color="#757575"></search>
                 </span>
             </div>
             <span v-if="type === 'danger'" class="error-message"> {{ errorMessage }} </span>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+    import { computed } from 'vue';
     import Search from '/public/icons/Search.vue';
 
     export default {
@@ -22,17 +23,12 @@
             Search,
         },
         props: {
+            modelValue: String,
+            name: String,
+            
             type: {
                 type: String,
                 default: "default"
-            },
-            value: {
-                type: String,
-                default: '',
-            },
-            name: {
-                type: String,
-                default: '',
             },
             withIcon: {
                 type: Boolean,
@@ -51,18 +47,23 @@
                 default: "Error message"
             }
         },
-        data() {
-            return {
-                inputValue: "",
+        emits: ['update:modelValue'],
+
+        setup(props, { emit }) {
+            const updateValue = (event) => {
+                emit('update:modelValue', event.target.value);
             };
-        },
-        computed: {
-            inputClasses() {
-                return {
-                    danger: this.type === "danger",
-                };
-            }
-        },
+
+            const inputClasses = computed(() => ({
+                danger: props.type === "danger",
+                'with-icon': props.withIcon
+            }));
+
+            return {
+                updateValue,
+                inputClasses
+            };
+        }
     };
 </script>
 
@@ -94,7 +95,6 @@
         &::placeholder {
             color: #949494;
             font-weight: 400;
-
         }
 
         &:focus {
