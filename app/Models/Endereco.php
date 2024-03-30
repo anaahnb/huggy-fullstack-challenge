@@ -12,6 +12,7 @@ class Endereco extends Model
     protected $fillable = [
         'cidade_id',
         'endereco_bairro',
+        'endereco_rua',
         'created_at',
         'updated_at'
     ];

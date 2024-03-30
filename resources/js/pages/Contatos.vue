@@ -3,6 +3,7 @@
         <h2>Contatos</h2>
 
         <create-modal v-if="showModal" @close="closeModal" />
+        <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @close="closeContactDetailsModal"/>
 
         <div class="contact__list">
             <div class="contact__action">
@@ -28,8 +29,8 @@
                         <td> {{ contato.contatos_telefone }} </td>
 
                         <div class="action-buttons" v-if="hoveredRow === contato.contato_id">
-                            <icon-button-component type="secondary" icon="edit" text="Editar" :handleClick="() => editContact(contato)"/>
-                            <icon-button-component type="danger" icon="trash" text="Excluir" :handleClick="() => deleteContact(contato)"/>
+                            <icon-button-component icon="edit" text="Editar"/>
+                            <icon-button-component icon="trash" text="Excluir"/>
                         </div>
                     </tr>
                 </tbody>
@@ -63,7 +64,7 @@
             IconButtonComponent,
             InputComponent,
             CreateModal,
-            ContactDetailsModal 
+            ContactDetailsModal,
         },
         setup() {
             const showModal = ref(false);
@@ -95,13 +96,15 @@
 
             return {
                 showModal,
-                hoveredRow,
-                showContactDetailsModal,
-                contacts,
-                currentContact,
                 openModal,
                 closeModal,
-                closeContactDetailsModal
+
+                hoveredRow,
+                showContactDetailsModal,
+                closeContactDetailsModal,
+
+                contacts,
+                currentContact,
             };
         }
     };

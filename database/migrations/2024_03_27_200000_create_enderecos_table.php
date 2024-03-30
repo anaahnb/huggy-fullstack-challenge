@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('endereco_id');
             $table->foreignId('cidade_id')->references('cidade_id')->on('cidades');
             $table->string('endereco_bairro');
+            $table->string('endereco_rua');
             $table->timestamps();
         });
     }

@@ -15,14 +15,14 @@ class ContatoApiController extends Controller
 
     public function index()
     {
-        $contatos = $this->contato->paginate(5);
+        $contatos = $this->contato->with('endereco.cidade.estado')->paginate(5);
 
         return response()->json($contatos, 200);
     }
 
     public function show($contato_id)
     {
-        $contato = $this->contato->find($contato_id);
+        $contato = $this->contato->with('endereco.cidade.estado')->find($contato_id);
         if($contato === null) {
             return response()->json(['ERRO' => 'Recurso pesquisado não existe.'], 404);
         }

@@ -14,7 +14,7 @@ class EstadoSeeder extends Seeder
     public function run(): void
     {
         Estado::create([
-            'estado_nome' => 'Maranhão'
+            'estado_nome' => 'Bahia'
         ]);
     }
 }

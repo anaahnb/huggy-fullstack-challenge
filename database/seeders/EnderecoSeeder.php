@@ -15,7 +15,9 @@ class EnderecoSeeder extends Seeder
     {
         Endereco::create([
             'cidade_id' => 1,
-            'endereco_bairro' => 'Cohajap',
+            'endereco_bairro' => 'São João',
+            'endereco_rua' => 'Rua Doutor Elpidio Nova, 1109',
+
         ]);
     }
 }

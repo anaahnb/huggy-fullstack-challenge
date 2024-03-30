@@ -15,7 +15,7 @@ class CidadeSeeder extends Seeder
     {
         Cidade::create([
             'estado_id' => 1,
-            'cidade_nome' => 'São Luis'
+            'cidade_nome' => 'Feira de Santana'
         ]);
     }
 }
