@@ -19,4 +19,20 @@ class Endereco extends Model
     protected $primaryKey = 'endereco_id';
     
     use HasFactory;
+
+    public function cidade()
+    {
+        return $this->belongsTo(Cidade::class, 'cidade_id', 'cidade_id');
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'cidade_id', 'estado_id')
+                    ->through(Cidade::class);
+    }
+
+    public function contatos()
+    {
+        return $this->hasMany(Contato::class, 'endereco_id', 'endereco_id');
+    }
 }

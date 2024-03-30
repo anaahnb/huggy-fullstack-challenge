@@ -20,4 +20,19 @@ class Cidade extends Model
     protected $primaryKey = 'cidade_id';
 
     use HasFactory;
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'estado_id', 'estado_id');
+    }
+
+    public function enderecos()
+    {
+        return $this->hasMany(Endereco::class, 'cidade_id', 'cidade_id');
+    }
+
+    public function contatos()
+    {
+        return $this->hasManyThrough(Contato::class, Endereco::class, 'cidade_id', 'endereco_id', 'cidade_id', 'endereco_id');
+    }
 }

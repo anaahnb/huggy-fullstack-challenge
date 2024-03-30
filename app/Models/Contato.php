@@ -42,9 +42,33 @@ class Contato extends Model
 
         if ($request->hasFile('contatos_imagem')) {
             $image = $request->file('contatos_imagem');
-            $data['contatos_imagem'] = $image->store('imagens', 'public');
+            $data['contatos_imagem'] = $image->store('images', 'public');
+        } else {
+
+            $text = explode(" ", $request->contatos_nome);
+            $image = substr($text[0], 0, 1) . substr($text[1], 0, 1);
+            $data['contatos_imagem'] = $image;
+            echo $image;
+
         }
 
         return $data;
+    }
+
+    public function endereco()
+    {
+        return $this->belongsTo(Endereco::class, 'endereco_id', 'endereco_id');
+    }
+
+    public function cidade()
+    {
+        return $this->belongsTo(Cidade::class, 'endereco_id', 'cidade_id')
+                    ->through(Endereco::class);
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class, 'endereco_id', 'estado_id')
+                    ->through(Cidade::class);
     }
 }
