@@ -3,12 +3,12 @@
         <div class="input-wrapper">
             <label v-if="!withIcon">{{ label }}</label>
             <div class="input-container">
-                <input :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" />
+                <input :type="typeInput" :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" />
                 <span v-if="withIcon" class="icon">
                     <search size="14" color="#757575"></search>
                 </span>
             </div>
-            <span v-if="type === 'danger'" class="error-message"> {{ errorMessage }} </span>
+            <span v-if="typeStyle === 'danger'" class="error-message"> {{ errorMessage }} </span>
         </div>
     </div>
 </template>
@@ -25,8 +25,13 @@
         props: {
             modelValue: String,
             name: String,
+
+            typeInput: {
+                type: String,
+                default: "text"
+            },
             
-            type: {
+            typeStyle: {
                 type: String,
                 default: "default"
             },

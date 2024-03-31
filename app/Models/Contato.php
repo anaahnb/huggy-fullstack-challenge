@@ -23,15 +23,26 @@ class Contato extends Model
 
     protected $primaryKey = 'contato_id';
 
-    public static function criarContato($request) {
-        return self::create(self::prepararDados($request));
+    public function endereco()
+    {
+        return $this->belongsTo(Endereco::class, 'endereco_id', 'endereco_id');
     }
 
-    public static function atualizarContato($request) {
-        return self::update(self::prepararDados($request));
+    public static function criarContatoComEndereco($request)
+    {
+        $endereco = Endereco::firstOrCreate([
+            'cidade_id' => $request->cidade_id,
+            'endereco_bairro' => $request->endereco_bairro,
+            'endereco_rua' => $request->endereco_rua,
+        ]);
+
+        $data = self::prepararDados($request);
+        $data['endereco_id'] = $endereco->endereco_id; 
+        return self::create($data);
     }
 
-    private static function prepararDados($request) {
+    private static function prepararDados($request)
+    {
         $data = $request->only([
             'contatos_nome',
             'endereco_id',
@@ -44,31 +55,11 @@ class Contato extends Model
             $image = $request->file('contatos_imagem');
             $data['contatos_imagem'] = $image->store('images', 'public');
         } else {
-
             $text = explode(" ", $request->contatos_nome);
             $image = substr($text[0], 0, 1) . substr($text[1], 0, 1);
             $data['contatos_imagem'] = $image;
-            echo $image;
-
         }
 
         return $data;
-    }
-
-    public function endereco()
-    {
-        return $this->belongsTo(Endereco::class, 'endereco_id', 'endereco_id');
-    }
-
-    public function cidade()
-    {
-        return $this->belongsTo(Cidade::class, 'endereco_id', 'cidade_id')
-                    ->through(Endereco::class);
-    }
-
-    public function estado()
-    {
-        return $this->belongsTo(Estado::class, 'endereco_id', 'estado_id')
-                    ->through(Cidade::class);
     }
 }

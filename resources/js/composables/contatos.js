@@ -5,13 +5,21 @@ import axios from 'axios';
 export default function useContacts() {
     const contacts = ref([]);
     const errors = ref('');
+
+    const currentPage = ref(1);
+    const totalPages = ref(1);
+
     const router = useRouter();
 
-    const getContacts = async () => {
+    const getContacts = async (page = 1) => {
         try {
-            const response = await axios.get('/api/contato');
+            const response = await axios.get(`/api/contato?page=${page}`);
+            
             contacts.value = response.data.data;
-            console.log(contacts.value);
+            currentPage.value = response.data.current_page;
+            totalPages.value = response.data.last_page;
+
+            console.log(response.data);
             
         } catch (error) {
             errors.value = 'Ocorreu um erro ao buscar os contatos.';
@@ -19,10 +27,29 @@ export default function useContacts() {
         }
     }
 
-    return {
-        errors,
-        contacts,
-        showConfirmModal,
-        getContacts,
+    const createContact = async (contactData) => {
+        try {
+            const response = await axios.post('/api/contato/store', contactData);
+            getContacts();
+            console.log(contactData);
+            return response.data;
+        } catch (error) {
+            errors.value = 'Ocorreu um erro ao criar o contato.';
+            console.error(error);
+        }
+    };
+
+    function nextPage() {
+        if (currentPage.value < totalPages.value) {
+            getContacts(currentPage.value + 1);
+        }
     }
+
+    function prevPage() {
+        if (currentPage.value > 1) {
+            getContacts(currentPage.value - 1);
+        }
+    }
+
+    return { contacts, getContacts, createContact, currentPage, totalPages, nextPage, prevPage };
 }

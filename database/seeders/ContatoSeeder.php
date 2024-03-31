@@ -17,7 +17,7 @@ class ContatoSeeder extends Seeder
 {
     $faker = FakerFactory::create();
 
-    for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 5; $i++) {
         Contato::create([
             'contatos_nome' => $faker->name,
             'contatos_email' => $faker->unique()->safeEmail,

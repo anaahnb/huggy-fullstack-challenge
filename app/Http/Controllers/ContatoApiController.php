@@ -15,7 +15,7 @@ class ContatoApiController extends Controller
 
     public function index()
     {
-        $contatos = $this->contato->with('endereco.cidade.estado')->paginate(5);
+        $contatos = $this->contato->with('endereco.cidade.estado')->paginate(7);
 
         return response()->json($contatos, 200);
     }
@@ -32,8 +32,7 @@ class ContatoApiController extends Controller
 
     public function store(Request $request)
     {
-        $contato = $this->contato->criarContato($request);
-
+        $contato = Contato::criarContatoComEndereco($request);
         return response()->json($contato, 201);
     }
 

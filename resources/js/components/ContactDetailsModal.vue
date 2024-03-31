@@ -2,7 +2,16 @@
     <modal-component>
         <template v-slot:header>
             <div class="header">
-                <h2> {{ contact.contatos_nome }} </h2>
+                <div class="header__name">
+                    <div v-if="imageType(contact) === 'image'">
+                        <img :src="`/storage/${contact.contatos_imagem}`" alt="Imagem do contato" class="contact-image">
+                    </div>
+                    <div v-else class="contact-placeholder">
+                        {{ contact.contatos_imagem }}
+                    </div>
+                    <h2> {{ contact.contatos_nome }} </h2>
+
+                </div>
                 <div class="button__group">
                     <icon-button-component aria-label="Botão para excluir contato" icon="trash"></icon-button-component>
                     <icon-button-component aria-label="Botão para editar contato" icon="edit"></icon-button-component>
@@ -47,8 +56,17 @@
         setup() {
             const { contacts } = useContacts();
 
+            const imageType = (contato) => {
+                if (contato.contatos_imagem.startsWith('images/')) {
+                    return 'image';
+                } else {
+                    return 'placeholder';
+                }
+            };
+
             return {
                 contacts,
+                imageType
             };
         }
     }
@@ -58,7 +76,34 @@
 
     .header {
         display: flex;
-        justify-content: space-between;   
+        justify-content: space-between; 
+        
+        .header__name {
+            display: flex;
+            align-items: center;
+
+            .contact-placeholder {
+                        width: 2rem;
+                        height: 2rem;
+                        background-color: #F8F7FD;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        margin-right: 1rem;
+                        text-transform: uppercase;
+                        color: #180D6E;
+                        font-weight: 500;
+                    }
+
+                    .contact-image {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                        margin-right: 1rem;
+                    }
+
+        }
 
         .button__group {
             display: flex;

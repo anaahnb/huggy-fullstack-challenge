@@ -2,7 +2,7 @@
     <section>
         <h2>Contatos</h2>
 
-        <create-modal v-if="showModal" @close="closeModal" />
+        <create-modal v-if="showModal" @close="closeModalAndRefreshContacts" />
         <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @close="closeContactDetailsModal"/>
 
         <div class="contact__list">
@@ -24,7 +24,15 @@
 
                 <tbody v-if="contacts.length > 0">
                     <tr v-for="contato in contacts" :key="contato.contato_id" @click="openModal(contato)" @mouseenter="hoveredRow = contato.contato_id" @mouseleave="hoveredRow = null">
-                        <td> {{ contato.contatos_nome }} </td>
+                        <td> 
+                            <div v-if="imageType(contato) === 'image'">
+                                <img :src="`/storage/${contato.contatos_imagem}`" alt="Imagem do contato" class="contact-image">
+                            </div>
+                            <div v-else class="contact-placeholder">
+                                {{ contato.contatos_imagem }}
+                            </div>
+                            {{ contato.contatos_nome }}
+                        </td>
                         <td> {{ contato.contatos_email }} </td>
                         <td> {{ contato.contatos_telefone }} </td>
 
@@ -36,11 +44,19 @@
                 </tbody>
             </table>
 
+            
             <div class="empty-state" v-if="contacts.length === 0">
-                <img src="/img/empty-image.svg">
+                <img src="/images/empty-image.svg">
                 <button-component type="primary" withIcon icon="add" text="Adicionar contato" :handleClick="openModal"/>
             </div>
         </div>
+
+        <div class="pagination">
+            <icon-button-component icon="left" @click="prevPage" :disabled="currentPage === 1"></icon-button-component>
+            <span>{{ currentPage }} / {{ totalPages }}</span>
+            <icon-button-component icon="right" @click="nextPage" :disabled="currentPage === totalPages"></icon-button-component>
+        </div>
+        
     </section>
 </template>
 
@@ -71,11 +87,19 @@
             const showContactDetailsModal = ref(false);
 
             const currentContact = ref(null);
-            const { contacts, getContacts } = useContacts();
+            const { contacts, getContacts, currentPage, totalPages, nextPage, prevPage } = useContacts();
 
             const hoveredRow = ref(null);
 
             onMounted(getContacts);
+
+            const imageType = (contato) => {
+                if (contato.contatos_imagem.startsWith('images/')) {
+                    return 'image';
+                } else {
+                    return 'placeholder';
+                }
+            };
 
             function openModal(contato = null) {
                 if (contato) {
@@ -86,8 +110,9 @@
                 }
             }
 
-            function closeModal() {
+            function closeModalAndRefreshContacts() {
                 showModal.value = false;
+                getContacts();
             }
 
             function closeContactDetailsModal() {
@@ -95,15 +120,20 @@
             }
 
             return {
+                imageType,
                 showModal,
                 openModal,
-                closeModal,
+                closeModalAndRefreshContacts,
 
                 hoveredRow,
                 showContactDetailsModal,
                 closeContactDetailsModal,
 
                 contacts,
+                currentPage,
+                totalPages,
+                nextPage,
+                prevPage,
                 currentContact,
             };
         }
@@ -125,6 +155,7 @@
             border-radius: 1rem;
             box-shadow: 0px 1px 2px 0px #00000026;
             height: 90vh;
+            overflow-x:auto;
 
             .contact__action {
                 display: flex;
@@ -155,8 +186,6 @@
                     font-weight: 600;
 
                     &:first-child { 
-                        width: 40%;
-
                         display: flex;
                         align-items: center;
                         gap: 4px;
@@ -176,33 +205,47 @@
                     padding: 1rem;
                     border-collapse: collapse;
                     cursor: pointer;
+                    word-break: keep-all;
+
+                    .contact-placeholder {
+                        width: 2rem;
+                        height: 2rem;
+                        background-color: #F8F7FD;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        margin-right: 1rem;
+                        text-transform: uppercase;
+                        color: #180D6E;
+                        font-weight: 500;
+                    }
+
+                    .contact-image {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                        margin-right: 1rem;
+                    }
+
+
 
                     &:first-child { 
                         border-top-left-radius: 1rem; 
                         border-bottom-left-radius: 1rem;
-                    }
-
-                    &:last-child {
-                        border-bottom-right-radius: 1rem; 
-                        border-top-right-radius: 1rem; 
-                    }
-
-                    &:first-child::before {
-                        content: '';
-                        display: inline-block;
-                        width: 2rem;
-                        height: 2rem;
-                        -moz-border-radius: 100%;
-                        -webkit-border-radius: 100%;
-                        border-radius: 100%;
-                        background-color: #F8F7FD;
+                        display: inline-flex;
+                        
                         align-items: center;
                         justify-content: center;
                         vertical-align: baseline;
                         margin-right: 1rem;
 
                         vertical-align: -50%;
+                    }
 
+                    &:last-child {
+                        border-bottom-right-radius: 1rem; 
+                        border-top-right-radius: 1rem; 
                     }
                 }
 
@@ -233,17 +276,33 @@
                         }
                     }
                 }
+
                 
             }
-
+            
             .empty-state {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    flex-direction: column;
-                    height: 70%;
-                    gap: 1.5rem;
-                }
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 70%;
+                gap: 1.5rem;
+            }
         }
+
+        .pagination {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 1rem;
+                align-items: center;
+                
+                span {
+                    margin: 0 6px;
+                }
+
+                button {
+                    padding: 4px 2px;
+                }
+            }
     }
 </style>
