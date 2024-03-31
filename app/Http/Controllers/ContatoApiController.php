@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contato;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class ContatoApiController extends Controller
         return response()->json($contato, 200);
     }
 
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
         $contato = Contato::criarContatoComEndereco($request);
         return response()->json($contato, 201);

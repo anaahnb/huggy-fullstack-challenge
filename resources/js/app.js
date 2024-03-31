@@ -4,6 +4,13 @@ import router from "./router";
 import { createApp } from "vue";
 
 import Toast, { useToast } from 'vue-toastification';
+import axios from 'axios';
+
+
+axios.defaults.validateStatus = function (status) {
+    return status >= 200 && status < 300;
+};
+
 import "vue-toastification/dist/index.css";
 
 import App from "./App.vue";
