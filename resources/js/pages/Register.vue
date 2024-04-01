@@ -28,7 +28,7 @@
 
 
     export default {
-        name: "LoginPage",
+        name: "RegisterPage",
         components: {
             InputComponent,
             ButtonComponent
