@@ -18,15 +18,17 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('retaguarda')->middleware('jwt.auth')->group(function() {
+// Route::prefix('retaguarda')->middleware('jwt.auth')->group(function() {
     Route::get('contato', 'ContatoApiController@index');
     Route::get('contato/{id}', 'ContatoApiController@show');
-    Route::post('contato/{id}', 'ContatoApiController@update');
-    Route::post('contato/{id}', 'ContatoApiController@destroy');
+    Route::post('contato/store', 'ContatoApiController@store');
+
+    Route::put('contato/{id}', 'ContatoApiController@update');
+    Route::delete('contato/delete/{id}', 'ContatoApiController@destroy');
 
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');
     Route::post('me', 'App\Http\Controllers\AuthController@me');
-});
+// });
 
 Route::post('register', 'App\Http\Controllers\AuthController@register');
 Route::post('login', 'App\Http\Controllers\AuthController@login');

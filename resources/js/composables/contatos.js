@@ -43,7 +43,18 @@ export default function useContacts() {
             console.error(error);
         }
     };
-    
+
+    const deleteContact = async (contactId) => {
+        try {
+            await axios.delete(`/api/contato/delete/${contactId}`);
+            getContacts(); 
+            return true; 
+        } catch (error) {
+            console.error(error);
+            errors.value = { message: 'Ocorreu um erro ao excluir o contato.' };
+            return false;
+        }
+    }; 
     
     function nextPage() {
         if (currentPage.value < totalPages.value) {
@@ -57,5 +68,5 @@ export default function useContacts() {
         }
     }
 
-    return { contacts, getContacts, createContact, currentPage, totalPages, nextPage, prevPage, errors };
+    return { contacts, getContacts, createContact, deleteContact, currentPage, totalPages, nextPage, prevPage, errors };
 }

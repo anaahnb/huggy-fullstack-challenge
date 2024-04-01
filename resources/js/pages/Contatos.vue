@@ -3,7 +3,8 @@
         <h2>Contatos</h2>
 
         <create-modal v-if="showModal" @close="closeModalAndRefreshContacts" />
-        <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @close="closeContactDetailsModal"/>
+        <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @open-confirm-modal="openConfirmModal" @close="closeContactDetailsModal"/>
+        <confirm-modal v-if="showConfirmModal" :contato-para-excluir="currentContact" @close="closeConfirmModal" @confirm-delete="handleDeleteContact" />
 
         <div class="contact__list">
             <div class="contact__action">
@@ -71,6 +72,8 @@
     import InputComponent from '/resources/js/components/InputComponent.vue';
     import CreateModal from '/resources/js/components/CreateModal.vue';
     import ContactDetailsModal from '/resources/js/components/ContactDetailsModal.vue';
+    import ConfirmModal from '/resources/js/components/ConfirmModal.vue';
+
 
     export default {
         name: "ContactsPage",
@@ -81,13 +84,15 @@
             InputComponent,
             CreateModal,
             ContactDetailsModal,
+            ConfirmModal
         },
         setup() {
             const showModal = ref(false);
             const showContactDetailsModal = ref(false);
+            const showConfirmModal = ref(false);
 
             const currentContact = ref(null);
-            const { contacts, getContacts, currentPage, totalPages, nextPage, prevPage } = useContacts();
+            const { contacts, getContacts, deleteContact, currentPage, totalPages, nextPage, prevPage } = useContacts();
 
             const hoveredRow = ref(null);
 
@@ -108,6 +113,26 @@
                 } else {
                     showModal.value = true;
                 }
+            }
+
+            function openConfirmModal(contato) {
+                if (contato) {
+                    currentContact.value = contato;
+                    showContactDetailsModal.value = false;
+                    showConfirmModal.value = true;
+                } else {
+                    console.error('Contato não definido');
+                }
+            }
+
+
+            function closeConfirmModal() {
+                showConfirmModal.value = false;
+            }
+
+            function handleDeleteContact(contactId) {
+                deleteContact(contactId);
+                closeConfirmModal();
             }
 
             function closeModalAndRefreshContacts() {
@@ -135,6 +160,10 @@
                 nextPage,
                 prevPage,
                 currentContact,
+                showConfirmModal,
+                openConfirmModal,
+                closeConfirmModal,
+                handleDeleteContact
             };
         }
     };
