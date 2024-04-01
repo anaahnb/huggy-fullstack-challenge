@@ -1,5 +1,4 @@
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import axios from 'axios';
 
 export default function useContacts() {
@@ -8,8 +7,6 @@ export default function useContacts() {
 
     const currentPage = ref(1);
     const totalPages = ref(1);
-
-    const router = useRouter();
 
     const getContacts = async (page = 1) => {
         try {
@@ -25,24 +22,40 @@ export default function useContacts() {
         }
     }
 
-    const createContact = async (contactData) => {
+    const createContact = async (newContact) => {
         try {
-            const response = await axios.post('/api/contato/store', contactData);
-            getContacts();
-        
-            errors.value = {}; 
-            return response.data;
-            
+            const formData = new FormData();
+            for (const key in newContact) {
+                formData.append(key, newContact[key]);
+            }
+
+            console.log('formdata', formData);
+    
+            const response = await axios.post('/api/contato/store', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+    
+            if (response.status === 201) {
+
+                getContacts();
+                return true;
+            }
         } catch (error) {
-            console.log('aqui')
-            if (error.response && error.response.status === 422) {
-                errors.value = error.response.data.errors;
-            } else {
+            if (error.response) {
+                console.error('Erro ao criar contato:', error.response.data);
+                errors.value = error.response.data;
+            }
+             else {
+                console.error('Erro ao criar contato:', error.message);
                 errors.value = { message: 'Ocorreu um erro ao criar o contato.' };
             }
-            console.error(error);
-        }
+            return false;
+        }        
     };
+    
+    
 
     const deleteContact = async (contactId) => {
         try {

@@ -5,24 +5,23 @@
                 <h2>Adicionar novo contato</h2>
             </template>
 
-
             <template v-slot:body>
-                <div>   
-                    <input-component v-model="newContact.contatos_nome" label="Nome" placeholder="Nome completo" :error-message="errors.contatos_nome && errors.contatos_nome[0]" :typeStyle="errors.contatos_nome ? 'danger' : 'default'"></input-component>
-                    <input-component typeInput="email" v-model="newContact.contatos_email" label="Email" placeholder="Email" :errorMessage="errors.contatos_email && errors.contatos_email[0]"></input-component>
-                    <input-component typeInput="file" @change="handleFileUpload" label="Imagem"></input-component>
+                <div>
+                    <input-component v-model="newContact.contatos_nome" :typeStyle="getErrorType('contatos_nome')" :errorMessage="getErrorMessage('contatos_nome')" label="Nome" placeholder="Nome completo"></input-component>
+                    
+                    <input-component typeInput="email" v-model="newContact.contatos_email" :typeStyle="getErrorType('contatos_email')" :errorMessage="getErrorMessage('contatos_email')" label="Email" placeholder="Email"></input-component>
+                    <input-component typeInput="file" @change="handleFileUpload" :typeStyle="getErrorType('contatos_imagem')" :errorMessage="getErrorMessage('contatos_imagem')" label="Imagem"></input-component>
                     <div class="input__row">
-                        <input-component typeInput="number" v-model="newContact.contatos_telefone" label="Telefone" placeholder="Telefone" :errorMessage="errors.contatos_telefone && errors.contatos_telefone[0]" :typeStyle="errors.contatos_telefone ? 'danger' : 'default'"></input-component>
-                        <input-component typeInput="number" v-model="newContact.contatos_celular" label="Celular" placeholder="Celular"></input-component>
+                        <input-component typeInput="number" v-model="newContact.contatos_telefone" :typeStyle="getErrorType('contatos_telefone')" :errorMessage="getErrorMessage('contatos_telefone')" label="Telefone" placeholder="Telefone"></input-component>
+                        <input-component typeInput="number" v-model="newContact.contatos_celular" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
                     </div>
-                    <input-component v-model="newContact.endereco_rua" label="Endereço" placeholder="Endereço" :errorMessage="errors.endereco_rua && errors.endereco_rua[0]" :typeStyle="errors.endereco_rua ? 'danger' : 'default'"></input-component>
+                    <input-component v-model="newContact.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
                     <div class="input__row">
-                        <input-component v-model="newContact.cidade_id" label="Cidade" placeholder="Cidade" :errorMessage="errors.cidade_id && errors.cidade_id[0]" :typeStyle="errors.cidade_id ? 'danger' : 'default'"></input-component>
-                        <input-component v-model="newContact.endereco_bairro" label="Bairro" placeholder="Bairro" :errorMessage="errors.endereco_bairro && errors.endereco_bairro[0]" :typeStyle="errors.endereco_bairro ? 'danger' : 'default'"></input-component>
+                        <input-component v-model="newContact.cidade_id" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')" label="Cidade" placeholder="Cidade"></input-component>
+                        <input-component v-model="newContact.endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
                     </div>
                 </div>
             </template>
-
 
             <template v-slot:footer>
                 <button-component text="Cancelar" type="secondary" @click="$emit('close')"></button-component>
@@ -33,7 +32,7 @@
 </template>
 
 <script>
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
     import { useToast } from 'vue-toastification';
 
     import ModalComponent from '/resources/js/components/ModalComponent.vue'
@@ -70,39 +69,43 @@
             };
 
             const submitCreateContactForm = async () => {
-                try {
-                    if (errors) {
-                        toast.error("Por favor, preencha todos os campos do formulário.");
-                        return; 
-                    } else {
-                        const formData = new FormData();
-                        for (const key in newContact.value) {
-                            formData.append(key, newContact.value[key]);
-                        }
-                        await createContact(formData);
-                        toast.success("Contato criado com sucesso!", { timeout: 2000 });
-                        emit('close');
-                    }
+                const result = await createContact(newContact.value);
+                console.log('Resultado da criação do contato:', result);
+                console.log('Dados de erro após a tentativa de criação:', JSON.stringify(errors.value));
 
-                } catch (error) {
-                    console.error(error);
+                if (result) {
+                    toast.success('Contato criado com sucesso!');
+                    emit('close');
+                } else {
+                    toast.error('Não foi possível criar o contato.');
                 }
             };
 
+            const getErrorMessage = (field) => {
+                if (errors.value && errors.value.errors && errors.value.errors[field]) {
+                    return errors.value.errors[field][0];
+                }
+                return '';
+            };
+
+            const getErrorType = (field) => {
+                return errors.value && errors.value.errors && errors.value.errors[field] ? 'danger' : 'default';
+            };
 
             return {
                 newContact,
                 toast,
                 errors,
-                submitCreateContactForm,
                 handleFileUpload,
+                submitCreateContactForm,
+                getErrorMessage,
+                getErrorType
             };
         }
     }
 </script>
 
 <style>
-
     .modal-footer {
         border-top: 1px solid #E1E1E1;
         display: flex;
@@ -115,5 +118,4 @@
         gap: 0 1.5rem;
         flex-wrap: wrap
     }
-
 </style>

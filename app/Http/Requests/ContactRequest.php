@@ -26,9 +26,10 @@ class ContactRequest extends FormRequest
         return [
             'contatos_nome' => ['required', 'string', 'max:255'],
             'contatos_email' => ['required', 'string', 'email', 'unique:contatos,contatos_email'],
-            'contatos_telefone' => ['required', 'unique:contatos,contatos_telefone'],
-            'contatos_imagem' => ['image|mimes:jpeg,png,jpg,gif|max:2048'],
-            'cidade_id' => ['required', 'number'], 
+            'contatos_telefone' => ['required', 'numeric' ,'unique:contatos,contatos_telefone'],
+            'contatos_celular' => ['required', 'numeric'],
+            'contatos_imagem' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],            
+            'cidade_id' => ['required', 'numeric'], 
             'endereco_bairro' => ['required', 'string', 'max:255'], 
             'endereco_rua' => ['required', 'string', 'max:255'],
         ];
@@ -49,8 +50,12 @@ class ContactRequest extends FormRequest
             'contatos_telefone.required' => 'O campo Telefone é obrigatório',
             'contatos_telefone.unique' => 'O campo Telefone já está cadastrado em outra conta',
 
+            'contatos_imagem.image' => 'O arquivo enviado precisa ser uma imagem',
+            'contatos_imagem.mimes' => 'O campo imgem suporta apenas os formatos jpg, png e jpeg',
+
+
             'cidade_id.required' => 'O campo Cidade é obrigatório',
-            'cidade_id.number' => 'O campo Cidade é inválido',
+            'cidade_id.numeric' => 'O campo Cidade é inválido', 
 
             'endereco_bairro.required' => 'O campo Bairro é obrigatório',
             'endereco_bairro.string' => 'O campo Bairro é inválido',

@@ -60,7 +60,7 @@
             };
 
             const inputClasses = computed(() => ({
-                danger: props.type === "danger",
+                danger: props.typeStyle === "danger",
                 'with-icon': props.withIcon
             }));
 
