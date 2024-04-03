@@ -12,8 +12,9 @@
                     <input-component typeInput="email" v-model="newContact.contatos_email" :typeStyle="getErrorType('contatos_email')" :errorMessage="getErrorMessage('contatos_email')" label="Email" placeholder="Email"></input-component>
                     <input-component typeInput="file" @change="handleFileUpload" :typeStyle="getErrorType('contatos_imagem')" :errorMessage="getErrorMessage('contatos_imagem')" label="Imagem"></input-component>
                     <div class="input__row">
-                        <input-component typeInput="number" v-model="newContact.contatos_telefone" :typeStyle="getErrorType('contatos_telefone')" :errorMessage="getErrorMessage('contatos_telefone')" label="Telefone" placeholder="Telefone"></input-component>
-                        <input-component typeInput="number" v-model="newContact.contatos_celular" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
+                        <input-component typeInput="tel" v-model="newContact.contatos_telefone" :mask="'(##) #####-####'" :typeStyle="getErrorType('contatos_telefone')" :errorMessage="getErrorMessage('contatos_telefone')" label="Telefone" placeholder="Telefone"></input-component>
+                        <input-component typeInput="tel" v-model="newContact.contatos_celular" :mask="'(##) #####-####'" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
+
                     </div>
                     <input-component v-model="newContact.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
                     <div class="input__row">

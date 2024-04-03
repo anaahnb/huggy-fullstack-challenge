@@ -3,7 +3,8 @@
         <div class="input-wrapper">
             <label v-if="!withIcon">{{ label }}</label>
             <div class="input-container">
-                <input :type="typeInput" :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" />
+                <input v-if="typeInput === 'tel'" :type="typeInput" :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" v-mask="mask" />
+                <input v-else :type="typeInput" :class="inputClasses" :placeholder="placeholder" :value="modelValue" @input="updateValue" />
                 <span v-if="withIcon" class="icon">
                     <search size="14" color="#757575"></search>
                 </span>
@@ -12,6 +13,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
     import { computed } from 'vue';
@@ -25,12 +27,10 @@
         props: {
             modelValue: String,
             name: String,
-
             typeInput: {
                 type: String,
                 default: "text"
             },
-            
             typeStyle: {
                 type: String,
                 default: "default"
@@ -50,7 +50,11 @@
             errorMessage: {
                 type: String,
                 default: "Error message"
-            }
+            },
+            mask: {
+                type: String,
+                default: ''
+            },
         },
         emits: ['update:modelValue'],
 
@@ -64,13 +68,24 @@
                 'with-icon': props.withIcon
             }));
 
+            const inputProps = computed(() => {
+                if (props.typeInput === 'tel') {
+                    return {
+                        'v-mask': props.mask
+                    };
+                }
+                return {};
+            });
+
             return {
                 updateValue,
-                inputClasses
+                inputClasses,
+                inputProps
             };
         }
     };
 </script>
+
 
 <style scoped lang="scss">
     .input-wrapper {

@@ -26,8 +26,8 @@ class ContactRequest extends FormRequest
         return [
             'contatos_nome' => ['required', 'string', 'max:255'],
             'contatos_email' => ['required', 'string', 'email', 'unique:contatos,contatos_email'],
-            'contatos_telefone' => ['required', 'numeric' ,'unique:contatos,contatos_telefone'],
-            'contatos_celular' => ['required', 'numeric'],
+            'contatos_telefone' => ['required','unique:contatos,contatos_telefone'],
+            'contatos_celular' => ['required'],
             'contatos_imagem' => ['sometimes', 'nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],            
             'cidade_id' => ['required', 'numeric'], 
             'endereco_bairro' => ['required', 'string', 'max:255'], 
