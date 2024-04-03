@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegistroRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,7 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(UserLoginRequest $request)
     {
         $credenciais = $request->all('email', 'password');
         $token = auth('api')->attempt($credenciais);
@@ -17,11 +18,12 @@ class AuthController extends Controller
         if($token) {
             return response()->json(['token' => $token], 200);
         } else{
-            return response()->json(['ERRO' => 'Usuário ou senha inválido'], 403);
+            return response()->json(['errors' => ['email' => ['Usuário ou senha inválido']]], 403);
         }
 
         return 'login';
     }
+
 
     public function register(UserRegistroRequest $request)
     {

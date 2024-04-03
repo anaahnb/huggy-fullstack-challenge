@@ -6,13 +6,13 @@
                 <h2> Entre na sua conta </h2>
             </div>
 
-            <form action=""> 
-                <input-component placeholder="Email" label="Email" />
-                <input-component type="password" placeholder="Senha" label="Senha" />
+            <form @submit.prevent="login"> 
+                <input-component v-model="email" typeInput="email" :typeStyle="getErrorType('email')" :errorMessage="getErrorMessage('email')" placeholder="Email" label="Email" />
+                <input-component v-model="password" typeInput="password" :typeStyle="getErrorType('password')" :errorMessage="getErrorMessage('password')" placeholder="Senha" label="Senha" />
                 
                 <div class="button_group">
                     <button-component text="Entrar" />
-                    <button-component type="secondary" text="Não possui conta? Registre-se" />
+                    <button-component type="secondary" text="Não possui conta? Registre-se" @click="handleButtonRedirect"/>
                 </div>
             </form>
         </div>
@@ -20,16 +20,43 @@
 </template>
 
 <script>
-
     import InputComponent from '/resources/js/components/InputComponent.vue'
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
+    import useLogin from '/resources/js/composables/auth.js';
 
+    import { useRouter } from 'vue-router';
 
     export default {
         name: "LoginPage",
         components: {
             InputComponent,
             ButtonComponent
+        },
+        setup() {
+            const { email, password, errors, login } = useLogin();
+            const router = useRouter();
+
+            const handleButtonRedirect = () => {
+                router.push('/register'); 
+            }
+
+            const getErrorType = (field) => {
+                return errors.value && errors.value[field] ? 'danger' : 'default';
+            };
+
+            const getErrorMessage = (field) => {
+                return errors.value && errors.value[field] ? errors.value[field][0] : '';
+            };
+
+            return {
+                email,
+                password,
+                errors,
+                login,
+                getErrorType,
+                getErrorMessage,
+                handleButtonRedirect
+            };
         }
     }
 </script>
