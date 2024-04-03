@@ -3,8 +3,9 @@
         <h2>Contatos</h2>
 
         <create-modal v-if="showModal" @close="closeModalAndRefreshContacts" />
-        <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @open-confirm-modal="openConfirmModal" @close="closeContactDetailsModal"/>
+        <contact-details-modal v-if="showContactDetailsModal" :contact="currentContact" @open-confirm-modal="openConfirmModal" @open-edit-modal="openEditModal" @close="closeContactDetailsModal"/>
         <confirm-modal v-if="showConfirmModal" :contato-para-excluir="currentContact" @close="closeConfirmModal" @confirm-delete="handleDeleteContact" />
+        <edit-modal v-if="showEditModal" :contato-para-editar="currentContact" @close="closeEditModal"/>
 
         <div class="contact__list">
             <div class="contact__action">
@@ -73,6 +74,7 @@
     import CreateModal from '/resources/js/components/CreateModal.vue';
     import ContactDetailsModal from '/resources/js/components/ContactDetailsModal.vue';
     import ConfirmModal from '/resources/js/components/ConfirmModal.vue';
+    import EditModal from '/resources/js/components/EditModal.vue';
 
 
     export default {
@@ -84,12 +86,14 @@
             InputComponent,
             CreateModal,
             ContactDetailsModal,
-            ConfirmModal
+            ConfirmModal,
+            EditModal,
         },
         setup() {
             const showModal = ref(false);
             const showContactDetailsModal = ref(false);
             const showConfirmModal = ref(false);
+            const showEditModal = ref(false);
 
             const currentContact = ref(null);
             const { contacts, getContacts, deleteContact, currentPage, totalPages, nextPage, prevPage } = useContacts();
@@ -115,6 +119,16 @@
                 }
             }
 
+            function openEditModal(contato) {
+                if (contato) {
+                    currentContact.value = contato;
+                    showContactDetailsModal.value = false;
+                    showEditModal.value = true;
+                } else {
+                    console.error('Contato não definido');
+                }
+            }
+
             function openConfirmModal(contato) {
                 if (contato) {
                     currentContact.value = contato;
@@ -123,6 +137,10 @@
                 } else {
                     console.error('Contato não definido');
                 }
+            }
+
+            function closeEditModal() {
+                showEditModal.value = false;
             }
 
 
@@ -163,7 +181,11 @@
                 showConfirmModal,
                 openConfirmModal,
                 closeConfirmModal,
-                handleDeleteContact
+                handleDeleteContact,
+
+                openEditModal,
+                closeEditModal,
+                showEditModal
             };
         }
     };

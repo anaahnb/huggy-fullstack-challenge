@@ -14,7 +14,7 @@
                 </div>
                 <div class="button__group">
                     <icon-button-component icon="trash" text="Excluir" @click="$emit('open-confirm-modal', contact)"/>
-                    <icon-button-component aria-label="Botão para editar contato" icon="edit"></icon-button-component>
+                    <icon-button-component aria-label="Botão para editar contato" icon="edit" @click="$emit('open-edit-modal', contact)"></icon-button-component>
                     <icon-button-component aria-label="Botão para fechar modal" icon="close" @click="$emit('close')"></icon-button-component>
                 </div>
             </div>

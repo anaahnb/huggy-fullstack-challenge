@@ -54,8 +54,35 @@ export default function useContacts() {
             return false;
         }        
     };
-    
-    
+
+    const updateContact = async (contact) => {
+        try {
+            const formData = new FormData();
+            for (const key in contact) {
+                formData.append(key, contact[key]);
+            }
+            console.log(contact.contato_id)
+            const response = await axios.put(`/api/contato/update/${contact.contato_id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if (response.status === 200) {
+                getContacts();
+                return true;
+            }
+        } catch (error) {
+            if (error.response) {
+                console.error('Erro ao atualizar contato:', error.response.data);
+                errors.value = error.response.data;
+            } else {
+                console.error('Erro ao atualizar contato:', error.message);
+                errors.value = { message: 'Ocorreu um erro ao atualizar o contato.' };
+            }
+            return false;
+        }
+    };
 
     const deleteContact = async (contactId) => {
         try {
@@ -81,5 +108,5 @@ export default function useContacts() {
         }
     }
 
-    return { contacts, getContacts, createContact, deleteContact, currentPage, totalPages, nextPage, prevPage, errors };
+    return { contacts, getContacts, createContact, updateContact, deleteContact, currentPage, totalPages, nextPage, prevPage, errors };
 }

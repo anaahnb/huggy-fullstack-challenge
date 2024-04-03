@@ -78,12 +78,6 @@
 
             const submitCreateContactForm = async () => {
                 const result = await createContact(newContact.value);
-                console.log('Resultado da criação do contato:', result);
-                console.log('Dados de erro após a tentativa de criação:', JSON.stringify(errors.value));
-
-                console.log('Cidades', cidades);
-
-
                 if (result) {
                     toast.success('Contato criado com sucesso!');
                     emit('close');
