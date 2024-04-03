@@ -22,7 +22,7 @@
 <script>
     import InputComponent from '/resources/js/components/InputComponent.vue'
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
-    import useLogin from '/resources/js/composables/auth.js';
+    import useLogin from '/resources/js/composables/login.js';
 
     import { useRouter } from 'vue-router';
 
