@@ -17,7 +17,8 @@
                     </div>
                     <input-component v-model="newContact.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
                     <div class="input__row">
-                        <input-component v-model="newContact.cidade_id" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')" label="Cidade" placeholder="Cidade"></input-component>
+
+                        <select-component v-model="newContact.cidade_id" :options="cidades" label="Cidade" placeholder="Selecione uma cidade" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')"></select-component>
                         <input-component v-model="newContact.endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
                     </div>
                 </div>
@@ -37,21 +38,28 @@
 
     import ModalComponent from '/resources/js/components/ModalComponent.vue'
     import InputComponent from '/resources/js/components/InputComponent.vue'
+    import SelectComponent from '/resources/js/components/SelectComponent.vue'
+
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
 
     import useContacts from '/resources/js/composables/contatos.js';
+    import useCidades from '/resources/js/composables/cidades.js';
+
 
     export default {
         name: "CreateModal",
         components: {
             ModalComponent,
             InputComponent,
-            ButtonComponent
+            ButtonComponent,
+            SelectComponent
         },
         setup(props, { emit } ) {
             const { createContact, errors } = useContacts();
+            const { cidades } = useCidades();
 
             const toast = useToast();
+            const selectedCity = ref('');
 
             const newContact = ref({
                 contatos_nome: '',
@@ -72,6 +80,9 @@
                 const result = await createContact(newContact.value);
                 console.log('Resultado da criação do contato:', result);
                 console.log('Dados de erro após a tentativa de criação:', JSON.stringify(errors.value));
+
+                console.log('Cidades', cidades);
+
 
                 if (result) {
                     toast.success('Contato criado com sucesso!');
@@ -99,7 +110,9 @@
                 handleFileUpload,
                 submitCreateContactForm,
                 getErrorMessage,
-                getErrorType
+                getErrorType,
+                cidades,
+                selectedCity,
             };
         }
     }

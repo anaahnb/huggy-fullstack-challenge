@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Models\Contato;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ContatoApiController extends Controller
@@ -37,7 +36,7 @@ class ContatoApiController extends Controller
         return response()->json($contato, 201);
     }
 
-    public function update(Request $request, $contato_id)
+    public function update(ContactRequest $request, $contato_id)
     {
         $contato = $this->contato->find($contato_id);
 

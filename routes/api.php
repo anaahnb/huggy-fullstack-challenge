@@ -19,11 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Route::prefix('retaguarda')->middleware('jwt.auth')->group(function() {
+    Route::get('/cidades', 'CidadeController@index');
+
     Route::get('contato', 'ContatoApiController@index');
     Route::get('contato/{id}', 'ContatoApiController@show');
     Route::post('contato/store', 'ContatoApiController@store');
 
-    Route::put('contato/{id}', 'ContatoApiController@update');
+    Route::put('contato/update/{id}', 'ContatoApiController@update');
     Route::delete('contato/delete/{id}', 'ContatoApiController@destroy');
 
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');

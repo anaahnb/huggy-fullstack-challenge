@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Cidade;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Estado;
 use Illuminate\Database\Seeder;
 
 class CidadeSeeder extends Seeder
@@ -13,9 +13,22 @@ class CidadeSeeder extends Seeder
      */
     public function run(): void
     {
-        Cidade::create([
-            'estado_id' => 1,
-            'cidade_nome' => 'Feira de Santana'
-        ]);
+        $cidadesPorEstado = [
+            'Bahia' => ['Salvador', 'Feira de Santana', 'Vitória da Conquista'],
+            'São Paulo' => ['São Paulo', 'Campinas', 'São José dos Campos'],
+            'Rio de Janeiro' => ['Rio de Janeiro', 'Niterói', 'São Gonçalo'],
+            'Maranhão' => ['São Luís', 'Santa Inês', 'Bacabal']
+        ];
+
+        foreach ($cidadesPorEstado as $estadoNome => $cidades) {
+            $estado = Estado::where('estado_nome', $estadoNome)->firstOrFail();
+
+            foreach ($cidades as $cidadeNome) {
+                Cidade::create([
+                    'estado_id' => $estado->estado_id,
+                    'cidade_nome' => $cidadeNome,
+                ]);
+            }
+        }
     }
 }

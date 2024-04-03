@@ -50,6 +50,9 @@ class ContactRequest extends FormRequest
             'contatos_telefone.required' => 'O campo Telefone é obrigatório',
             'contatos_telefone.unique' => 'O campo Telefone já está cadastrado em outra conta',
 
+            'contatos_celular.required' => 'O campo Celular é obrigatório',
+
+
             'contatos_imagem.image' => 'O arquivo enviado precisa ser uma imagem',
             'contatos_imagem.mimes' => 'O campo imgem suporta apenas os formatos jpg, png e jpeg',
 

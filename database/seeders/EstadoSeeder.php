@@ -13,8 +13,14 @@ class EstadoSeeder extends Seeder
      */
     public function run(): void
     {
-        Estado::create([
-            'estado_nome' => 'Bahia'
-        ]);
+        $estados = [
+            'Bahia', 'São Paulo', 'Rio de Janeiro', 'Maranhão'
+        ];
+
+        foreach ($estados as $estado) {
+            Estado::create([
+                'estado_nome' => $estado,
+            ]);
+        }
     }
 }

@@ -56,10 +56,11 @@ class Contato extends Model
             $data['contatos_imagem'] = $image->store('images', 'public');
         } else {
             $text = explode(" ", $request->contatos_nome);
-            $image = substr($text[0], 0, 1) . substr($text[1], 0, 1);
+            $image = isset($text[1]) ? substr($text[0], 0, 1) . substr($text[1], 0, 1) : substr($text[0], 0, 2);
             $data['contatos_imagem'] = $image;
         }
 
         return $data;
     }
+
 }
