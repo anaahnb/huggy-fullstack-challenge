@@ -53,11 +53,7 @@
             </div>
         </div>
 
-        <div class="pagination">
-            <icon-button-component icon="left" @click="prevPage" :disabled="currentPage === 1"></icon-button-component>
-            <span>{{ currentPage }} / {{ totalPages }}</span>
-            <icon-button-component icon="right" @click="nextPage" :disabled="currentPage === totalPages"></icon-button-component>
-        </div>
+        <pagination-component :currentPage="currentPage" :totalPages="totalPages" :nextPage="nextPage" :prevPage="prevPage" @change-page="changePage"/>
         
     </section>
 </template>
@@ -69,6 +65,8 @@
 
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue';
     import IconButtonComponent from '/resources/js/components/IconButtonComponent.vue';
+    import PaginationComponent from '/resources/js/components/PaginationComponent.vue';
+
 
     import InputComponent from '/resources/js/components/InputComponent.vue';
     import CreateModal from '/resources/js/components/CreateModal.vue';
@@ -88,6 +86,7 @@
             ContactDetailsModal,
             ConfirmModal,
             EditModal,
+            PaginationComponent,
         },
         setup() {
             const showModal = ref(false);
@@ -162,6 +161,10 @@
                 showContactDetailsModal.value = false;
             }
 
+            const changePage = (page) => {
+                getContacts(page);
+            };
+
             return {
                 imageType,
                 showModal,
@@ -176,6 +179,7 @@
                 currentPage,
                 totalPages,
                 nextPage,
+                changePage,
                 prevPage,
                 currentContact,
                 showConfirmModal,
