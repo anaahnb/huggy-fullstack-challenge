@@ -9,7 +9,7 @@
 
         <div class="contact__list">
             <div class="contact__action">
-                <input-component placeholder="Buscar contato" withIcon />
+                <input-component placeholder="Buscar contato" withIcon v-model="searchQuery" />
                 <button-component type="primary" withIcon icon="add" text="Adicionar contato" :handleClick="openModal"/>
             </div>
             <table>
@@ -24,8 +24,8 @@
                     </tr>
                 </thead>
 
-                <tbody v-if="contacts.length > 0">
-                    <tr v-for="contato in contacts" :key="contato.contato_id" @click="openModal(contato)" @mouseenter="hoveredRow = contato.contato_id" @mouseleave="hoveredRow = null">
+                <tbody v-if="filteredContacts.length > 0">
+                    <tr v-for="contato in filteredContacts" :key="contato.contato_id" @click="openModal(contato)" @mouseenter="hoveredRow = contato.contato_id" @mouseleave="hoveredRow = null">
                         <td> 
                             <div v-if="imageType(contato) === 'image'">
                                 <img :src="`/storage/${contato.contatos_imagem}`" alt="Imagem do contato" class="contact-image">
@@ -47,7 +47,7 @@
             </table>
 
             
-            <div class="empty-state" v-if="contacts.length === 0">
+            <div class="empty-state" v-if="filteredContacts.length === 0">
                 <img src="/images/empty-image.svg">
                 <button-component type="primary" withIcon icon="add" text="Adicionar contato" :handleClick="openModal"/>
             </div>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import South from '/public/icons/South.vue';
     import useContacts from '/resources/js/composables/contatos.js';
 
@@ -67,13 +67,11 @@
     import IconButtonComponent from '/resources/js/components/IconButtonComponent.vue';
     import PaginationComponent from '/resources/js/components/PaginationComponent.vue';
 
-
     import InputComponent from '/resources/js/components/InputComponent.vue';
     import CreateModal from '/resources/js/components/CreateModal.vue';
     import ContactDetailsModal from '/resources/js/components/ContactDetailsModal.vue';
     import ConfirmModal from '/resources/js/components/ConfirmModal.vue';
     import EditModal from '/resources/js/components/EditModal.vue';
-
 
     export default {
         name: "ContactsPage",
@@ -98,8 +96,14 @@
             const { contacts, getContacts, deleteContact, currentPage, totalPages, nextPage, prevPage } = useContacts();
 
             const hoveredRow = ref(null);
+            const searchQuery = ref('');
+            const filteredContacts = ref([]);
 
-            onMounted(getContacts);
+            onMounted(() => {
+                getContacts().then(() => {
+                    filteredContacts.value = contacts.value;
+                });
+            });
 
             const imageType = (contato) => {
                 if (contato.contatos_imagem.startsWith('images/')) {
@@ -142,7 +146,6 @@
                 showEditModal.value = false;
             }
 
-
             function closeConfirmModal() {
                 showConfirmModal.value = false;
             }
@@ -154,7 +157,9 @@
 
             function closeModalAndRefreshContacts() {
                 showModal.value = false;
-                getContacts();
+                getContacts().then(() => {
+                    filteredContacts.value = contacts.value;
+                });
             }
 
             function closeContactDetailsModal() {
@@ -162,8 +167,22 @@
             }
 
             const changePage = (page) => {
-                getContacts(page);
+                getContacts(page).then(() => {
+                    filteredContacts.value = contacts.value;
+                });
             };
+
+            watch(searchQuery, (newValue) => {
+                if (newValue) {
+                    filteredContacts.value = contacts.value.filter(contato =>
+                        contato.contatos_nome.toLowerCase().includes(newValue.toLowerCase()) ||
+                        contato.contatos_email.toLowerCase().includes(newValue.toLowerCase()) ||
+                        contato.contatos_telefone.toLowerCase().includes(newValue.toLowerCase())
+                    );
+                } else {
+                    filteredContacts.value = contacts.value;
+                }
+            });
 
             return {
                 imageType,
@@ -189,7 +208,9 @@
 
                 openEditModal,
                 closeEditModal,
-                showEditModal
+                showEditModal,
+                searchQuery,
+                filteredContacts
             };
         }
     };
