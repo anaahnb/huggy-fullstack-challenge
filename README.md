@@ -33,6 +33,10 @@ Para executar o projeto é preciso que dois comandos sejam executados simultanea
 npm run dev
 php artisan serve
 ```
+## Melhorias
+- Dividir o código em componentes menores para facilitar a manutenção e compreensão do sistema.
+- Utilizar a API do IBGE para realizar a busca de cidades por estado.
+- Implementar middleware de autenticação para verificar a validade dos tokens de acesso antes de permitir o acesso às rotas protegidas.
 
 ## License
 
