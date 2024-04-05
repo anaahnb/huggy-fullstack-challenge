@@ -41,6 +41,10 @@ class Contato extends Model
         return self::create($data);
     }
 
+    public function atualizarContato($request) {
+        $this->update($this->prepararDados($request));
+    }
+
     private static function prepararDados($request)
     {
         $data = $request->only([

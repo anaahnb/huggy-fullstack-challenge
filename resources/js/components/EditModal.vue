@@ -1,4 +1,3 @@
-<!-- EditModal.vue -->
 <template>
     <form @submit.prevent="submitEditContactForm">
         <modal-component>
@@ -13,17 +12,17 @@
                     <input-component typeInput="file" @change="handleFileUpload" :typeStyle="getErrorType('contatos_imagem')" :errorMessage="getErrorMessage('contatos_imagem')" label="Imagem"></input-component>
                     
                     <div class="input__row">
-                        <input-component typeInput="number" v-model="editContact.contatos_telefone" :typeStyle="getErrorType('contatos_telefone')" :errorMessage="getErrorMessage('contatos_telefone')" label="Telefone" placeholder="Telefone"></input-component>
-                        <input-component typeInput="number" v-model="editContact.contatos_celular" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
+                        <input-component v-model="editContact.contatos_telefone" :typeStyle="getErrorType('contatos_telefone')" :errorMessage="getErrorMessage('contatos_telefone')" label="Telefone" placeholder="Telefone"></input-component>
+                        <input-component v-model="editContact.contatos_celular" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
                     </div>
                     
-                    <input-component v-model="editContact.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
+                    <input-component v-model="editContact.endereco.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
                     <div class="input__row">
-                        <input-component v-model="editContact.cidade_id" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')" label="Cidade" placeholder="Cidade"></input-component>
-                        <input-component v-model="editContact.endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
+                        <select-component v-model="editContact.endereco.cidade_id" :options="cidades" label="Cidade" placeholder="Selecione uma cidade" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')"></select-component>
+                        <input-component v-model="editContact.endereco.endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
                     </div>
                 </div>
-            </template>
+            </template> 
 
             <template v-slot:footer>
                 <button-component text="Cancelar" type="secondary" @click="$emit('close')"></button-component>
@@ -40,15 +39,20 @@
     import ModalComponent from '/resources/js/components/ModalComponent.vue'
     import InputComponent from '/resources/js/components/InputComponent.vue'
     import ButtonComponent from '/resources/js/components/ButtonComponent.vue'
+    import SelectComponent from '/resources/js/components/SelectComponent.vue'
 
-    import useContacts from '/resources/js/composables/contatos.js';
+
+    import useContacts from '/resources/js/composables/contatos.js'
+    import useCidades from '/resources/js/composables/cidades.js'
+
 
     export default {
         name: "EditModal",
         components: {
             ModalComponent,
             InputComponent,
-            ButtonComponent
+            ButtonComponent,
+            SelectComponent
         },
         props: {
             contatoParaEditar: {
@@ -59,20 +63,23 @@
 
         setup(props, { emit }) {
             const { updateContact, errors } = useContacts();
+            const { cidades } = useCidades();
+
 
             const toast = useToast();
+            const selectedCity = ref('');
+
 
             const editContact = ref({...props.contatoParaEditar});
 
+            console.log(editContact)
+            
             const handleFileUpload = (event) => {
                 editContact.value.contatos_imagem = event.target.files[0];
             };
 
             const submitEditContactForm = async () => {
                 const result = await updateContact(editContact.value);
-                console.log('Resultado da edição do contato:', result);
-                console.log('Dados de erro após a tentativa de edição:', JSON.stringify(errors.value));
-
                 if (result) {
                     toast.success('Contato editado com sucesso!');
                     emit('close');
@@ -99,7 +106,9 @@
                 handleFileUpload,
                 submitEditContactForm,
                 getErrorMessage,
-                getErrorType
+                getErrorType,
+                cidades,
+                selectedCity,
             };
         }
     }

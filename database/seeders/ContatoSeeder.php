@@ -23,8 +23,8 @@ class ContatoSeeder extends Seeder
             Contato::create([
                 'contatos_nome' => $contatoNome,
                 'contatos_email' => $faker->unique()->safeEmail,
-                'contatos_telefone' => $faker->numerify('##########'),
-                'contatos_celular' => $faker->numerify('##########'), 
+                'contatos_telefone' => $faker->numerify('(##) #####-####'),
+                'contatos_celular' => $faker->numerify('(##) #####-####'), 
                 'endereco_id' => 1,
                 'contatos_imagem' => $contatoImagem
             ]);

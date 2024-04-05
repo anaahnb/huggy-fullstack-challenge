@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::get('contato/{id}', 'ContatoApiController@show');
     Route::post('contato/store', 'ContatoApiController@store');
 
-    Route::put('contato/update/{id}', 'ContatoApiController@update');
+    Route::post('contato/update/{id}', 'ContatoApiController@update');
     Route::delete('contato/delete/{id}', 'ContatoApiController@destroy');
 
     Route::post('refresh', 'App\Http\Controllers\AuthController@refresh');

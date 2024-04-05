@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ContactRequest;
 use App\Models\Contato;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ContatoApiController extends Controller
@@ -36,8 +37,9 @@ class ContatoApiController extends Controller
         return response()->json($contato, 201);
     }
 
-    public function update(ContactRequest $request, $contato_id)
+    public function update(Request $request, $contato_id)
     {
+
         $contato = $this->contato->find($contato_id);
 
         if($contato === null) {
@@ -47,17 +49,22 @@ class ContatoApiController extends Controller
         if($request->method() === 'PATCH') {
             if($request->file('contatos_imagem')) {
                 Storage::disk('public')->delete($contato->contatos_imagem);
+                $contato->contatos_imagem = $request->file('contatos_imagem')->store('images', 'public');
             }
             $contato->atualizarContato($request);
         } else {
             if($request->file('contatos_imagem')) {
                 Storage::disk('public')->delete($contato->contatos_imagem);
+                $contato->contatos_imagem = $request->file('contatos_imagem')->store('images', 'public');
             }
             $contato->atualizarContato($request);
         }
 
+        $contato->save();
+
         return response()->json($contato, 200);
     }
+
 
     public function destroy($contato_id)
     {

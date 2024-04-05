@@ -15,7 +15,7 @@ export default function useContacts() {
             contacts.value = response.data.data;
             currentPage.value = response.data.current_page;
             totalPages.value = response.data.last_page;
-            
+                    
         } catch (error) {
             errors.value = 'Ocorreu um erro ao buscar os contatos.';
             console.error(error);
@@ -61,13 +61,12 @@ export default function useContacts() {
             for (const key in contact) {
                 formData.append(key, contact[key]);
             }
-            console.log(contact.contato_id)
-            const response = await axios.put(`/api/contato/update/${contact.contato_id}`, formData, {
+            const response = await axios.post(`/api/contato/update/${contact.contato_id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-
+    
             if (response.status === 200) {
                 getContacts();
                 return true;

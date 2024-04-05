@@ -28,7 +28,7 @@
             Search,
         },
         props: {
-            modelValue: String,
+            modelValue: [String, Number],
             name: String,
 
             options: {
