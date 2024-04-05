@@ -43,6 +43,16 @@ class Contato extends Model
 
     public function atualizarContato($request) {
         $this->update($this->prepararDados($request));
+    
+        $endereco = $this->endereco;
+    
+        if ($endereco) {
+            $endereco->update([
+                'cidade_id' => $request->endereco_cidade_id,
+                'endereco_bairro' => $request->endereco_endereco_bairro,
+                'endereco_rua' => $request->endereco_endereco_rua,
+            ]);
+        }
     }
 
     private static function prepararDados($request)

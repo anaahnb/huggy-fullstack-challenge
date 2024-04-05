@@ -16,10 +16,10 @@
                         <input-component v-model="editContact.contatos_celular" :typeStyle="getErrorType('contatos_celular')" :errorMessage="getErrorMessage('contatos_celular')" label="Celular" placeholder="Celular"></input-component>
                     </div>
                     
-                    <input-component v-model="editContact.endereco.endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
+                    <input-component v-model="editContact.endereco_endereco_rua" :typeStyle="getErrorType('endereco_rua')" :errorMessage="getErrorMessage('endereco_rua')" label="Endereço" placeholder="Endereço"></input-component>
                     <div class="input__row">
-                        <select-component v-model="editContact.endereco.cidade_id" :options="cidades" label="Cidade" placeholder="Selecione uma cidade" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')"></select-component>
-                        <input-component v-model="editContact.endereco.endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
+                        <select-component v-model="editContact.endereco_cidade_id" :options="cidades" label="Cidade" placeholder="Selecione uma cidade" :typeStyle="getErrorType('cidade_id')" :errorMessage="getErrorMessage('cidade_id')"></select-component>
+                        <input-component v-model="editContact.endereco_endereco_bairro" :typeStyle="getErrorType('endereco_bairro')" :errorMessage="getErrorMessage('endereco_bairro')" label="Bairro" placeholder="Bairro"></input-component>
                     </div>
                 </div>
             </template> 
